@@ -24,7 +24,7 @@ if processExists is true then
 
         -- Just disconnect if already connected
         try
-            click button "Disconnect" of window 1
+            click button "Disconnect" of window 2
             delay 2
         end try
     end tell
@@ -35,8 +35,8 @@ else
 end if
 
 tell application "System Events"
-    -- Wait for first window to open. Do nothing.
-    repeat until (window 1 of process targetApp exists)
+    -- Wait for main window to open. Do nothing.
+    repeat until (window 2 of process targetApp exists)
         delay 1
     end repeat
 
@@ -45,15 +45,17 @@ tell application "System Events"
         keystroke return
     end tell
 
-    -- Wait for second/third? window to open and then automatically enter password extracted from your Keychain
+    -- Wait for auth window to open and then automatically enter password extracted from your Keychain
     repeat until (window 3 of process targetApp exists)
         delay 2
     end repeat
+    delay 1
     tell process targetApp
         -- This is where the the password in the Keychain is accessed for use as input rather than being hardcoded as plain text in other versions of this script out in the wild
         set inString to "AnyConnect_VPN"
         set PSWD to do shell script "/usr/bin/security find-generic-password -wl " & quoted form of inString
         keystroke PSWD as text
+        delay 1
         keystroke return
     end tell
 
@@ -61,7 +63,7 @@ tell application "System Events"
     -- repeat until (window "Cisco AnyConnect - Banner" of process targetApp exists)
     --	delay 2
     -- end repeat
-    tell process targetApp
-        keystroke return
-    end tell
+    -- tell process targetApp
+    --     keystroke return
+    -- end tell
 end tell
