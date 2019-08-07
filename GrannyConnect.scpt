@@ -52,8 +52,8 @@ tell application "System Events"
     delay 1
     tell process targetApp
         -- This is where the the password in the Keychain is accessed for use as input rather than being hardcoded as plain text in other versions of this script out in the wild
-        set inString to "AnyConnect_VPN"
-        set PSWD to do shell script "/usr/bin/security find-generic-password -wl " & quoted form of inString
+        set PSWD to do shell script "security find-generic-password -l AnyConnect_VPN -w"
+        -- set PSWD to do shell script "security find-internet-password -a User -s server.example.com -w"
         keystroke PSWD as text
         delay 1
         keystroke return
